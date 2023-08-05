@@ -15,6 +15,7 @@ const ResultsContainer = () => {
   const dispatch = useAppDispatch()
   const results = useAppSelector((state) => state.resultsReducer.data)
   const isLoading = useAppSelector((state) => state.resultsReducer.isLoading)
+  const isError = useAppSelector((state) => state.resultsReducer.isError)
 
   console.log(results)
 
@@ -26,23 +27,17 @@ const ResultsContainer = () => {
     <SectionContainer>
       <Title text="RESULTADO DE LANÇAMENTO" />
       <Separator />
-      <div className="grid grid-cols-2 gap-4 ">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <SuccessContainer
-            successes={results?.success ? results.success : 0}
-          />
-        )}
-
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <FailureContainer failures={results?.failure ? results.failure : 0} />
-        )}
-      </div>
+      {isError ? (
+        <Title text={'Nenhum lançamento encontrado.'} />
+      ) : isLoading ? (
+        <Loading />
+      ) : (
+        <div className="grid grid-cols-2 gap-4 ">
+          <SuccessContainer successes={results?.success || 0} />
+          <FailureContainer failures={results?.failure || 0} />
+        </div>
+      )}
     </SectionContainer>
   )
 }
-
 export default ResultsContainer

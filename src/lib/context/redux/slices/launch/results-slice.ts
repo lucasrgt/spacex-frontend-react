@@ -8,7 +8,6 @@ export const fetchResults = createAsyncThunk<Result, void>(
   'fetchResults',
   async () => {
     const response = await useFetch({ route: '/launches/results' })
-    console.log('Data:', response.data)
     return response.data
   }
 )
@@ -41,7 +40,6 @@ const resultsSlice = createSlice({
       }
     )
     builder.addCase(fetchResults.rejected, (state, action) => {
-      console.log('Error:', action.error)
       state.isError = true
     })
   }
