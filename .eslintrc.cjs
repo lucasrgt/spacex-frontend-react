@@ -13,5 +13,6 @@ module.exports = {
     'react-refresh/only-export-components': "off",
     "@typescript-eslint/no-nun-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   },
 }
