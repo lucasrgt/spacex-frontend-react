@@ -7,7 +7,7 @@ import { useFetch } from '../../../../hooks/use-fetch.ts'
 export const fetchChartData = createAsyncThunk<Result, void>(
   'fetchChartData',
   async () => {
-    const response = await useFetch({ route: '/results' })
+    const response = await useFetch({ route: '/launches/stats' })
     console.log('Data:', response.data)
     return response.data
   }
