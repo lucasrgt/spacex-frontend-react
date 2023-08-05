@@ -5,7 +5,7 @@ import { useFetch } from '../../../src/lib/hooks/use-fetch'
 jest.mock('axios')
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
-const defaultUrl = 'http://127.0.0.1:5000'
+const defaultUrl = process.env.SERVER_URL || 'http://127.0.0.1:5000'
 
 describe('useFetch Hook', () => {
   afterEach(() => {

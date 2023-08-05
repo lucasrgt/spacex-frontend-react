@@ -3,9 +3,9 @@ import axios from 'axios'
 import { Result } from '../../../../../domain/models'
 import { useFetch } from '../../../../hooks/use-fetch.ts'
 
-/** Fetch launches from backend */
+/** Fetch launch results (successes and failures) from backend */
 export const fetchResults = createAsyncThunk<Result, void>(
-  'fetchLaunches',
+  'fetchResults',
   async () => {
     const response = await useFetch({ route: '/results' })
     console.log('Data:', response.data)
@@ -13,19 +13,19 @@ export const fetchResults = createAsyncThunk<Result, void>(
   }
 )
 
-interface LaunchResultsState {
+interface ResultsState {
   isLoading: boolean
   isError: boolean
   data: Result | null
 }
 
-const initialState: LaunchResultsState = {
+const initialState: ResultsState = {
   isLoading: false,
   isError: false,
   data: null
 }
 
-const launchResultsSlice = createSlice({
+const resultsSlice = createSlice({
   name: 'results',
   initialState,
   reducers: {},
@@ -47,4 +47,4 @@ const launchResultsSlice = createSlice({
   }
 })
 
-export default launchResultsSlice.reducer
+export default resultsSlice.reducer
