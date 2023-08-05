@@ -12,7 +12,7 @@ export const useFetch = async ({
   route = '',
   params = ''
 }: UseFetchParams) => {
-  const requestUrl = `${url}${route === '/' ? '' : '/' + route}${
+  const requestUrl = `${url}/${route === '/' ? '' : '/' + route}${
     params ? encodeURIComponent(params) : ''
   }`
 
