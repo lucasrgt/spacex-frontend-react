@@ -13,11 +13,10 @@ import Loading from '../../../components/atoms/loading.tsx'
 
 const ResultsContainer = () => {
   const dispatch = useAppDispatch()
-  const results = useAppSelector((state) => state.resultsReducer.data)
-  const isLoading = useAppSelector((state) => state.resultsReducer.isLoading)
-  const isError = useAppSelector((state) => state.resultsReducer.isError)
 
-  console.log(results)
+  const { data, isLoading, isError } = useAppSelector(
+    (state) => state.resultsReducer
+  )
 
   useEffect(() => {
     dispatch(fetchResults())
@@ -33,8 +32,8 @@ const ResultsContainer = () => {
         <Loading />
       ) : (
         <div className="grid grid-cols-2 gap-4 ">
-          <SuccessContainer successes={results?.success || 0} />
-          <FailureContainer failures={results?.failure || 0} />
+          <SuccessContainer successes={data?.success || 0} />
+          <FailureContainer failures={data?.failure || 0} />
         </div>
       )}
     </SectionContainer>

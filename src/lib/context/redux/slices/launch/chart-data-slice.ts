@@ -1,14 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { Result } from '../../../../../domain/models'
+import { ChartData } from '../../../../../domain/models'
 import { useFetch } from '../../../../hooks/use-fetch.ts'
 
 /** Fetch launch chart data from backend */
-export const fetchChartData = createAsyncThunk<Result, void>(
+export const fetchChartData = createAsyncThunk<ChartData[], void>(
   'fetchChartData',
   async () => {
     const response = await useFetch({ route: '/launches/stats' })
-    console.log('Data:', response.data)
+    console.log(response.data)
     return response.data
   }
 )
@@ -16,7 +15,7 @@ export const fetchChartData = createAsyncThunk<Result, void>(
 interface ChartDataState {
   isLoading: boolean
   isError: boolean
-  data: Result | null
+  data: ChartData[] | null
 }
 
 const initialState: ChartDataState = {
@@ -26,7 +25,7 @@ const initialState: ChartDataState = {
 }
 
 const chartDataSlice = createSlice({
-  name: 'results',
+  name: 'chartData',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -35,13 +34,12 @@ const chartDataSlice = createSlice({
     })
     builder.addCase(
       fetchChartData.fulfilled,
-      (state, action: PayloadAction<Result>) => {
+      (state, action: PayloadAction<ChartData[]>) => {
         state.isLoading = false
         state.data = action.payload
       }
     )
     builder.addCase(fetchChartData.rejected, (state, action) => {
-      console.log('Error:', action.error)
       state.isError = true
     })
   }

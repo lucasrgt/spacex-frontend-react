@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { PaginatedLaunches, Result } from '../../../../../domain/models'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { PaginatedLaunches } from '../../../../../domain/models'
 import { useFetch } from '../../../../hooks/use-fetch.ts'
 
 type PaginatedLaunchesParams = {
@@ -12,28 +11,47 @@ type PaginatedLaunchesParams = {
 /** Fetch launches from backend */
 export const fetchPaginatedLaunches = createAsyncThunk<
   PaginatedLaunches,
-  PaginatedLaunchesParams
+  PaginatedLaunchesParams,
+  { rejectValue: { message: string } }
 >(
   'fetchPaginatedLaunches',
-  async ({ page = 1, search = '' }: PaginatedLaunchesParams) => {
-    const response = await useFetch({
-      route: '/launches',
-      params: { page: page, search: search }
-    })
-    console.log('Data:', response.data)
-    return response.data
+  async (
+    { page = 1, search = '' }: PaginatedLaunchesParams,
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await useFetch({
+        route: '/launches',
+        params: { page: page, search: search }
+      })
+      console.log('Data:', response.data)
+      return response.data
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        typeof error.response.data === 'object' &&
+        error.response.data.message
+      ) {
+        return rejectWithValue({ message: error.response.data.message })
+      } else {
+        return rejectWithValue({ message: error.message })
+      }
+    }
   }
 )
 
 interface PaginatedLaunchesState {
   isLoading: boolean
   isError: boolean
+  error: string | null
   data: PaginatedLaunches | null
 }
 
 const initialState: PaginatedLaunchesState = {
   isLoading: false,
   isError: false,
+  error: null,
   data: null
 }
 
@@ -44,6 +62,8 @@ const paginatedLaunchesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchPaginatedLaunches.pending, (state) => {
       state.isLoading = true
+      state.isError = false
+      state.error = null
     })
     builder.addCase(
       fetchPaginatedLaunches.fulfilled,
@@ -53,8 +73,9 @@ const paginatedLaunchesSlice = createSlice({
       }
     )
     builder.addCase(fetchPaginatedLaunches.rejected, (state, action) => {
-      console.log('Error:', action.error)
+      state.isLoading = false
       state.isError = true
+      state.error = action.payload?.message || 'Request failed'
     })
   }
 })
