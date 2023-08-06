@@ -11,7 +11,9 @@ import { options } from './chart-optionts.ts'
 Chart.register(CategoryScale, LinearScale, BarElement, Tooltip)
 
 const BarChart = ({ chartData }: any) => {
-  return <Bar options={options} data={chartData} />
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return <Bar options={options} data={chartData}></Bar>
 }
 
 export default BarChart

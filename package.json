@@ -15,7 +15,8 @@
     "test:unit": "vitest -d test/unit",
     "test:integration": "vitest -d test/integration",
     "test:staged": "vitest --changed",
-    "test:ci": "vitest --coverage"
+    "test:ci": "vitest --coverage",
+    "start": "serve -s dist"
   },
   "engines": {
     "node": ">=14.0.0",
