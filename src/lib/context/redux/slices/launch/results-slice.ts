@@ -7,8 +7,7 @@ import { useFetch } from '../../../../hooks/use-fetch.ts'
 export const fetchResults = createAsyncThunk<Result, void>(
   'fetchResults',
   async () => {
-    const response = await useFetch({ route: '/results' })
-    console.log('Data:', response.data)
+    const response = await useFetch({ route: '/launches/results' })
     return response.data
   }
 )
@@ -41,7 +40,6 @@ const resultsSlice = createSlice({
       }
     )
     builder.addCase(fetchResults.rejected, (state, action) => {
-      console.log('Error:', action.error)
       state.isError = true
     })
   }
