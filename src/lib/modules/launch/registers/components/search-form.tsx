@@ -12,8 +12,9 @@ const SearchForm = () => {
     const urlParams = new URLSearchParams(window.location.search)
     const search = urlParams.get('search')
     const page = Number(urlParams.get('page')) || 1
-    setSearchText(search || '')
+
     if (search) {
+      setSearchText(decodeURIComponent(search.replace(/\+/g, ' ')))
       dispatch(fetchPaginatedLaunches({ search: search, page: page }))
     }
   }, [dispatch])
